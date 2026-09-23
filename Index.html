@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Robot Móvil</title>
+    <style>
+        :root {
+            --bg-color: #f4f6f9;
+            --text-muted: #8c939d;
+            --green-main: #10b981;
+            --green-hover: #059669;
+            --red-main: #ef4444;
+            --red-hover: #dc2626;
+            --dark-main: #1e293b;
+            --dark-hover: #0f172a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .section-title {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: 16px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease-in-out;
+            text-align: left;
+            user-select: none;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Colores según diseño */
+        .btn-green { background-color: var(--green-main); }
+        .btn-green:hover { background-color: var(--green-hover); }
+
+        .btn-red { background-color: var(--red-main); }
+        .btn-red:hover { background-color: var(--red-hover); }
+
+        .btn-dark { background-color: var(--dark-main); }
+        .btn-dark:hover { background-color: var(--dark-hover); }
+
+        .icon-box {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        .icon-box svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: white;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .text-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .btn-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .btn-desc {
+            font-size: 0.85rem;
+            opacity: 0.85;
+            font-weight: 400;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- NAVEGACIÓN -->
+        <div>
+            <div class="section-title">Navegación</div>
+            <div class="btn-group">
+                <button class="btn btn-green" onclick="sendCommand('ir_verde')">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </div>
+                    <div class="text-box">
+                        <span class="btn-title">Ir a verde</span>
+                        <span class="btn-desc">Moverse a la zona verde</span>
+                    </div>
+                </button>
+
+                <button class="btn btn-red" onclick="sendCommand('ir_rojo')">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </div>
+                    <div class="text-box">
+                        <span class="btn-title">Ir a Rojo</span>
+                        <span class="btn-desc">Moverse a la zona roja</span>
+                    </div>
+                </button>
+
+                <button class="btn btn-dark" onclick="sendCommand('home')">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    </div>
+                    <div class="text-box">
+                        <span class="btn-title">Home</span>
+                        <span class="btn-desc">Volver a la posición inicial</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <!-- TOMAR CAJA -->
+        <div>
+            <div class="section-title">Tomar Caja</div>
+            <div class="btn-group">
+                <button class="btn btn-red" onclick="sendCommand('tomar_caja_roja')">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    </div>
+                    <div class="text-box">
+                        <span class="btn-title">Tomar caja roja</span>
+                        <span class="btn-desc">Recoger caja de la zona roja</span>
+                    </div>
+                </button>
+
+                <button class="btn btn-green" onclick="sendCommand('tomar_caja_verde')">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    </div>
+                    <div class="text-box">
+                        <span class="btn-title">Tomar caja verde</span>
+                        <span class="btn-desc">Recoger caja de la zona verde</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <!-- REGRESAR CAJA -->
+        <div>
+            <div class="section-title">Regresar Caja</div>
+            <div class="btn-group">
+                <button class="btn btn-red" onclick="sendCommand('regresar_caja_roja')">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                    </div>
+                    <div class="text-box">
+                        <span class="btn-title">Regresar caja roja</span>
+                        <span class="btn-desc">Devolver caja a la zona roja</span>
+                    </div>
+                </button>
+
+                <button class="btn btn-green" onclick="sendCommand('regresar_caja_verde')">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                    </div>
+                    <div class="text-box">
+                        <span class="btn-title">Regresar caja verde</span>
+                        <span class="btn-desc">Devolver caja a la zona verde</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function sendCommand(cmd) {
+            console.log("Enviando comando:", cmd);
+            fetch('/cmd?action=' + cmd)
+                .then(response => {
+                    if (response.ok) {
+                        console.log("Comando procesado correctamente");
+                    } else {
+                        console.error("Error procesando el comando");
+                    }
+                })
+                .catch(error => console.error("Error de conexión:", error));
+        }
+    </script>
+</body>
+</html>
